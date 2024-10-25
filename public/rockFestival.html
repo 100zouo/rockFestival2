@@ -168,7 +168,7 @@
             slider.addEventListener('touchend', (e) => {
                 isDragging = false
 
-                if (startX === e.changeTouches[0].clientX) {
+                if (startX === e.changedTouches[0].clientX) {
                     slider.style.transition = 'transform 0.3s ease-in-out'
                     return
                 }
