@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/style.css"/>
+    <script src="/jquery/jquery.js"></script>
+    <title>RockFestival</title>
+</head>
+<body>
+    <div id="topSection" class="top-section a-ct">
+        <div class="top-title">
+            <p>백하얀이 생일</p>
+        </div>
+        <div class="top-content">
+            <h1>생일파티에 초대합니당</h1>
+            <p>벌써 1년이 지났다요</p>
+            <p>생일을 축하합니다</p>
+        </div>
+        <div class="top-footer">
+            <p>2024. 12. 7. SAT. PM 1:30</p>
+            <p>경상남도 사천시 사천읍</p>
+        </div>
+    </div>
+    <div id="fixedHeader" class="fixed-header">
+        <h2>백하얀의 첫번째 생일잔치</h2>
+    </div>
+    <main>
+        <section class="content vh80 a-ct t-ct dp-flx-c">
+            <div class="title-area bg-wht">
+                <h3>인사말</h3>
+                <h2 class="hide">소제목</h2>
+            </div>
+            <div class="contents-area">
+                <p>안녕하세요</p>
+                <p>하얀이를 사랑해주셔서</p>
+                <p>대단히 감사합니다</p>
+            </div>
+        </section>
+        <section class="content">
+            <div class="title-area">
+                <h3>Phone</h3>
+                <h2 class="hide">연락처</h2>
+            </div>
+            <div class="contents-area dp-flx-r j-ct t-ct">
+                <div class="wd50 dp-flx-c">
+                    <p>아빠</p>
+                    <p>백상원</p>
+                    <p>010 4864 8958</p>
+                    <br>
+                    <p>오빠</p>
+                    <p>백빰이</p>
+                    <p>010 1234 5678</p>
+                </div>
+                <div class="wd50 dp-flx-c">
+                    <p>엄마</p>
+                    <p>김민정</p>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="title-area">
+                <h3>Gallery</h3>
+                <h2 class="hide">사진</h2>
+            </div>
+            <div class="contents-area">
+                <div class="slider-container">
+                    <button class="slide-btn prev-btn">◀︎</button>
+                    <div class="slider">
+                        <div class="card">
+                            <p>Photo 1</p>
+                            <img src="">
+                        </div>
+                    </div>
+                    <button class="slide-btn next-btn">▶︎</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        $(document).ready(() => {
+            fetch('/assets/img.json').then(res => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return res.json(); // JSON으로 파싱
+            }).then(data => {
+                console.log(data);
+                $('.slider').empty();
+                let imgs = data.imgs;
+                let cards = '';
+                for (let i=0; i<imgs.length; i++) {
+                    cards += '<div class="card">';
+                    cards += '  <p>Photo '+(i+1)+'</p>';
+                    cards += '  <img src="data:image/png;base64, '+imgs[i]+'" />'
+                    cards += '</div>';
+                }
+                $('.slider').html(cards);
+            })
+
+            window.addEventListener('scroll', () => {
+                const fixedHeader = document.getElementById('fixedHeader')
+                const main = document.getElementsByTagName('main')[0]
+
+                if (window.scrollY > window.innerHeight) {
+                    fixedHeader.classList.add('show-header')
+                    main.classList.add('mt10vh', 'pt10vh')
+                } else {
+                    fixedHeader.classList.remove('show-header')
+                    main.classList.remove('mt10vh', 'pt10vh')
+                }
+            })
+
+            let currentIdx = 0;
+            let startX = 0;
+            let isDragging = false;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+
+            // slider event
+            const slider = document.querySelector('.slider')
+            const nextBtn = document.querySelector('.next-btn')
+            const prevBtn = document.querySelector('.prev-btn')
+
+            nextBtn.addEventListener('click', () => {
+                currentIdx++
+                slideCards()
+            })
+            prevBtn.addEventListener('click', () => {
+                currentIdx--
+                slideCards()
+            })
+            slider.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX
+                isDragging = true
+                slider.style.transition = 'none'
+            })
+            slider.addEventListener('touchmove', (e) => {
+                if (!isDragging) return
+
+                const currentX = e.touches[0].clientX
+                const diffX = currentX - startX
+
+                currentTranslate = prevTranslate + diffX
+
+                slider.style.transform = 'translateX(' + currentTranslate + 'px)'
+            })
+            slider.addEventListener('touchend', (e) => {
+                isDragging = false
+
+                if (startX === e.changeTouches[0].clientX) {
+                    slider.style.transition = 'transform 0.3s ease-in-out'
+                    return
+                }
+
+                const movedBy = currentTranslate - prevTranslate
+
+                if (movedBy < -300) {
+                    currentIdx++
+                } else if (movedBy > 300) {
+                    currentIdx--
+                }
+
+                slideCards()
+                slider.style.transition = 'transform 0.3s ease-in-out'
+            })
+
+            function slideCards () {
+                const cardWidth = slider.firstElementChild.clientWidth + 20
+
+                const maxIdx = slider.children.length - Math.floor(slider.offsetWidth / cardWidth)
+                const maxWdt = slider.scrollWidth
+
+                if (currentIdx > maxIdx) {
+                    currentIdx = maxIdx
+                } else if (currentIdx < 0) {
+                    currentIdx = 0
+                } else if (Math.floor(currentIdx * cardWidth) > maxWdt) {
+                    currentIdx--
+                }
+
+                slider.style.transform = 'translateX(-' + (currentIdx * cardWidth) + 'px)'
+                prevTranslate = -(currentIdx * cardWidth)
+            }
+        })
+    </script>
+</body>
+</html>

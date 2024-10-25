@@ -1,0 +1,254 @@
+/* 기본설정 */
+* {margin: 0; padding: 0; box-sizing: border-box;}
+html, body {height: 100%; font-family: Arial, Helvetica, sans-serif;}
+body {line-height: 1.6;}
+.mt10vh {margin-top: 10vh !important;}
+.pt10vh {padding-top: 10vh !important;}
+.hide {display: none !important; transition: display 0.3s ease;}
+.bg-wgt {background-color: white !important; box-shadow: none !important;}
+
+.dp-flx-c {display: flex; flex-direction: column;}
+.dp-flx-r {display: flex; flex-direction: row;}
+
+.a-ct {align-items: center !important;}
+.a-st {align-items: flex-start !important;}
+.a-ed {align-items: flex-end !important;}
+
+.j-ct {justify-content: center !important;}
+.j-st {justify-content: flex-start !important;}
+.j-ed {justify-content: flex-end !important;}
+
+.t-ct {text-align: center !important;}
+.t-lt {text-align: left !important;}
+.t-rt {text-align: right !important;}
+
+.vh100 {height: 100vh !important;}
+.vh80 {height: 80vh !important;}
+.vh50 {height: 50vh !important;}
+.vh30 {height: 30vh !important;}
+
+.wd50 {width: 50% !important;}
+
+/* 상단영역 */
+.top-section {
+    background-color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.top-title, .top-footer {
+    height: 20vh;
+    position: relative;
+    padding: 0 20px 0 20px;
+    align-content: center;
+}
+.top-content {
+    height: 80vh;
+    position: relative;
+    padding: 0 20px 0 20px;
+}
+
+/* 헤더영역 */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    z-index: 1000;
+    overflow: hidden;
+    transition: height 0.5s ease, font-size 0.3s ease;
+}
+.show-header {
+    height: 10vh;
+}
+
+/* 메인컨텐츠 영역 */
+main {
+    background-color: #f4f4f4;
+    padding: 20px 0 0 0;
+    transition: margin 0.3s ease, padding 0.3s ease;
+}
+main:has(+ .btm-sheet:not(.hide)) {
+    padding-bottom: 10vh;
+}
+.content {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.content.empty {
+    height: 30vh;
+}
+.content>.title-area {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 5px 20px 5px 20px;
+}
+.content>.contents-area {
+    padding-top: 10px;
+}
+.slider {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
+}
+.card:hover {
+    transform: scale(1.1);
+}
+.slider-container {
+    position: relative;
+    align-content: center;
+    width: 90%;
+    margin: 10px auto;
+    overflow: hidden;
+}
+.card {
+    align-content: center;
+    margin: 10px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+.slide-btn {
+    position: absolute;
+    height: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 8px;
+    background-color: white;
+    color: rgba(0, 0, 0, 0.3);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+.prev-btn {
+    left: 0;
+}
+.next-btn {
+    right: 0;
+}
+.input-area input {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+.input-area button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+/* 바텀영역 */
+.btm-sheet {
+    position: fixed;
+    height: 10vh;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f4f4f4;
+    text-align: center;
+    z-index: 1000;
+}
+.btm-btn-grp {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+.btm-btn-grp button {
+    flex-basis: calc(25%-10px);
+    flex-grow: 1;
+    margin: 5px;
+    padding: 15px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3 ease;
+}
+.btm-btn-grp button:hover {
+    background-color: #555;
+}
+
+@media (max-width: 600px) {
+    header h1 {font-size: 1rem;}
+    .content {padding: 15px;}
+    .content>.title-area>h3 {font-size: 0.8rem;}
+    .content>.title-area>h2 {font-size: 1.2rem;}
+    .top-section {font-size: 1.5rem;}
+    .input-area button, .input-area input {font-size: 1rem;}
+    .slider-container {
+        min-height: 300px;
+    }
+    .card {
+        min-height: 300px;
+        flex: 0 0 300px;
+        font-size: 1.5rem;
+    }
+    .card>img {
+        max-width: 250px;
+        max-height: 250px;
+    }
+}
+@media (min-width: 601px) and (max-width: 1024px) {
+    body {padding: 40px;}
+    header h1 {font-size: 2rem;}
+    .content {padding: 25px;}
+    .content>.title-area>h3 {font-size: 1.5rem;}
+    .content>.title-area>h2 {font-size: 1.9rem;}
+    .top-section {font-size: 2.5rem;}
+    .input-area button, .input-area input {font-size: 1.5rem;}
+    .slider-container {
+        min-height: 600px;
+    }
+    .card {
+        min-height: 600px;
+        flex: 0 0 600px;
+        font-size: 2.5rem;
+    }
+    .card>img {
+        max-width: 550px;
+        max-height: 550px;
+    }
+}
+@media (min-width: 1025px) {
+    body {padding: 60px;}
+    header h1 {font-size: 2.5rem;}
+    .content {padding: 30px;}
+    .content>.title-area>h3 {font-size: 2rem;}
+    .content>.title-area>h2 {font-size: 2.3rem;}
+    .top-section {font-size: 3.5rem;}
+    .input-area button, .input-area input {font-size: 2rem;}
+    .slider-container {
+        min-height: 600px;
+    }
+    .card {
+        min-height: 600px;
+        flex: 0 0 600px;
+        font-size: 3.5rem;
+    }
+    .card>img {
+        max-width: 550px;
+        max-height: 550px;
+    }
+}
