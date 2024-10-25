@@ -46,7 +46,7 @@
                 <div class="wd50 dp-flx-c">
                     <p>아빠</p>
                     <p>백상원</p>
-                    <p>010 4864 8958</p>
+                    <p>010 1234 1234</p>
                     <br>
                     <p>오빠</p>
                     <p>백빰이</p>
@@ -114,6 +114,7 @@
 
             let currentIdx = 0;
             let startX = 0;
+            let startY = 0;
             let isDragging = false;
             let currentTranslate = 0;
             let prevTranslate = 0;
@@ -132,12 +133,16 @@
                 slideCards()
             })
             slider.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY; // Y좌표 추가
                 isDragging = true
                 slider.style.transition = 'none'
             })
             slider.addEventListener('touchmove', (e) => {
+                /*
                 if (!isDragging) return
+
+                e.preventDefault();
 
                 const currentX = e.touches[0].clientX
                 const diffX = currentX - startX
@@ -145,6 +150,20 @@
                 currentTranslate = prevTranslate + diffX
 
                 slider.style.transform = 'translateX(' + currentTranslate + 'px)'
+                */
+                if (!isDragging) return;
+
+                const currentX = e.touches[0].clientX;
+                const currentY = e.touches[0].clientY; // Y좌표 추가
+                diffX = currentX - startX;
+                diffY = currentY - startY;
+
+                // 수평 스와이프 감지
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    e.preventDefault(); // 세로 스크롤 방지
+                    currentTranslate = prevTranslate + diffX;
+                    slider.style.transform = 'translateX(' + currentTranslate + 'px)';
+                }
             })
             slider.addEventListener('touchend', (e) => {
                 isDragging = false
